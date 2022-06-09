@@ -1,0 +1,6 @@
+[MASTER]
+ignore=venv
+disable=R0903,W0237
+
+[FORMAT]
+max-line-length=120

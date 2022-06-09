@@ -1,0 +1,17 @@
+version: "3"
+services:
+    finman:
+        build: .
+        links:
+            - data-access
+        ports:
+          - 4000:4000
+    data-access:
+        image: jackwhelan/data-access:latest
+        environment:
+          - DATABASE_HOST=REDACTED
+          - DATABASE_PORT=REDACTED
+          - DATABASE_USER=REDACTED
+          - DATABASE_PASS=REDACTED
+        ports:
+          - 5000:5000

@@ -1,9 +1,19 @@
+from flask import Flask
+
+from api.api_version import api_version
 from classes.Account import Account
 from classes.Liability import Liability
 from classes.Person import Person
 from classes.Asset import Asset
 
-def main():
+app = Flask(__name__)
+app.register_blueprint(api_version)
+
+@app.route('/')
+def default_route():
+    return 'Default Route, Please Specify API Version.'
+
+def seed_data():
     jack = Person("Jack", "Whelan")
     jacks_assets = [
         Asset("Midleton Very Rare 2021", "Bottle of rare whiskey.", 264.5, '05/06/2022'),
@@ -17,9 +27,7 @@ def main():
     jacks_liabilities = [
         Liability("Bens Wedding Gift", "Still owe ben €150/€500 for his wedding gift.", 150, '05/06/2022')
     ]
-    jacks_account = Account(jack, "Worth", 20000, jacks_assets, jacks_liabilities, None, None)
-    print(jacks_account.total_value)
-    print(jacks_account.assets_value())
+    return Account(jack, "Worth", 20000, jacks_assets, jacks_liabilities, None, None)
 
 if __name__ == '__main__':
-    main()
+    app.run(host='0.0.0.0', port=4000, debug=True)
