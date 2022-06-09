@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from Asset import Asset
-from Liability import Liability
-from Transaction import Transaction
-from Person import Person
+from classes.Asset import Asset
+from classes.Liability import Liability
+from classes.Transaction import Transaction
+from classes.Person import Person
 
 class Account:
     def __init__(self, owner: Person, description: str, balance: float, assets: list[Asset], liabilities: list[Liability],

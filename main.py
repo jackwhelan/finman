@@ -1,6 +1,6 @@
 from flask import Flask
 
-from api_version import api_version
+from api.api_version import api_version
 from classes.Account import Account
 from classes.Liability import Liability
 from classes.Person import Person
@@ -30,4 +30,4 @@ def seed_data():
     return Account(jack, "Worth", 20000, jacks_assets, jacks_liabilities, None, None)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', port=4000, debug=True)
