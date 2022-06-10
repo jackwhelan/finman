@@ -1,4 +1,3 @@
-import json
 import requests
 from bson.objectid import ObjectId
 
@@ -22,17 +21,17 @@ def create_person(first_name: str, last_name: str):
         "lastName": last_name
     }
     
-    response = requests.post(f'http://data-access:5000/finman/person', json=json.dumps(payload))
-    return { 'response': response.json() }
+    response = requests.post(f'http://data-access:5000/finman/person', json=payload)
+    return response.json()
 
-def get_person(oid: ObjectId):
+def get_person(oid):
     if oid:
         response = requests.get(f'http://data-access:5000/finman/person', params={'oid': oid})
-    else:
-        response = requests.get(f'http://data-access:5000/finman/person')
+        return { 'Person': response.json() }
+    response = requests.get(f'http://data-access:5000/finman/person')
     # retrieved_account = Account(response['owner'], response['description'], response['balance'], response['assets'],
     #                             response['liabilities'], response['transaction_history'], response['scheduled_transactions'])
-    return { 'response': response.json() }
+    return { 'People': response.json() }
 
 def update_person():
     pass
