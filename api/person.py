@@ -23,8 +23,9 @@ def read():
 
 @person_routes.route('/person', methods = ['PATCH'])
 def update():
-    payload = update_person(request.get_json())
-    requests.patch(config['connection_uri'], params=request.args)
+    updates = request.get_json()
+    response = update_person(request.args.get('oid'), updates)
+    return response
 
 @person_routes.route('/person', methods = ['DELETE'])
 def delete():
