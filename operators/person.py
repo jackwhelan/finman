@@ -1,37 +1,30 @@
+import logging
 import requests
-from bson.objectid import ObjectId
 
-from exceptions import CreatePersonException
+from classes.Person import Person
 
 def create_person(first_name: str, last_name: str):
-    if not first_name.isalpha():
-        raise CreatePersonException('First name must only contain letters.')
-    
-    if not last_name.isalpha():
-        raise CreatePersonException('Last name must only contain letters.')
-    
-    if not len(first_name) > 1 and len(first_name <= 30):
-        raise CreatePersonException('First name must be between 2 and 30 characters in length.')
-    
-    if not len(last_name) > 1 and len(last_name <= 30):
-        raise CreatePersonException('Last name must be between 2 and 30 characters in length.')
-    
+    Person(first_name, last_name)
+
     payload = {
-        "firstName": first_name,
-        "lastName": last_name
+        "first_name": first_name,
+        "last_name": last_name
     }
-    
+
+    # TODO: Replace occurences of data-access api with config var
     response = requests.post(f'http://data-access:5000/finman/person', json=payload)
     return response.json()
 
 def get_person(oid):
-    if oid:
-        response = requests.get(f'http://data-access:5000/finman/person', params={'oid': oid})
+    if oid is not None:
+        response = requests.get(f'http://data-access:5000/finman/person?oid={oid}')
         return { 'Person': response.json() }
+    people = []
     response = requests.get(f'http://data-access:5000/finman/person')
-    # retrieved_account = Account(response['owner'], response['description'], response['balance'], response['assets'],
-    #                             response['liabilities'], response['transaction_history'], response['scheduled_transactions'])
-    return { 'People': response.json() }
+    for person in response.json():
+        logging.error(person)
+        people.append(Person(person['first_name'], person['last_name'], person['_id']['$oid']).__dict__)
+    return { 'People': people }
 
 def update_person():
     pass
