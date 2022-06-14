@@ -29,4 +29,5 @@ def update():
 
 @person_routes.route('/person', methods = ['DELETE'])
 def delete():
-    requests.delete(config['connection_uri'], params=request.args)
+    response = delete_person(request.args.get('oid'))
+    return response
