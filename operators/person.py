@@ -1,4 +1,3 @@
-import logging
 import requests
 
 from classes.Person import Person
@@ -20,11 +19,11 @@ def get_person(oid):
     # TODO: Refactor
     if oid is not None:
         response = requests.get(f'http://data-access:5000/finman/person?oid={oid}')
-        return { 'Person': response.json() }
+        return { 'Person': response.json()['response'] }
     people = []
     response = requests.get(f'http://data-access:5000/finman/person')
-    for person in response.json():
-        people.append(Person(person['first_name'], person['last_name'], person['_id']['$oid']).__dict__)
+    for person in response.json()['response']:
+        people.append(Person(person['first_name'], person['last_name'], person['_id']).__dict__)
     return { 'People': people }
 
 def update_person(oid, updates: dict):
@@ -44,5 +43,7 @@ def update_person(oid, updates: dict):
     response = requests.patch(f'http://data-access:5000/finman/person?oid={oid}', json=payload)
     return { 'Person': response.json() }
 
-def delete_person():
-    pass
+def delete_person(oid):
+    if oid is not None:
+        response = requests.delete(f'http://data-access:5000/finman/person?oid={oid}')
+        return response.json()
