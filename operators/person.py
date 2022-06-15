@@ -1,7 +1,10 @@
 import requests
 
 from classes.Person import Person
+from etc.config import ConfigHandler
 from exceptions import CreatePersonException
+
+config = ConfigHandler()
 
 def create_person(first_name: str, last_name: str):
     Person(first_name, last_name)
@@ -12,16 +15,16 @@ def create_person(first_name: str, last_name: str):
     }
 
     # TODO: Replace occurences of data-access api with config var
-    response = requests.post(f'http://data-access:5000/finman/person', json=payload)
+    response = requests.post(f'{config["connection_uri"]}/finman/person', json=payload)
     return response.json()
 
 def get_person(oid):
     # TODO: Refactor
     if oid is not None:
-        response = requests.get(f'http://data-access:5000/finman/person?oid={oid}')
+        response = requests.get(f'{config["connection_uri"]}/finman/person?oid={oid}')
         return { 'Person': response.json()['response'] }
     people = []
-    response = requests.get(f'http://data-access:5000/finman/person')
+    response = requests.get(f'{config["connection_uri"]}/finman/person')
     for person in response.json()['response']:
         people.append(Person(person['first_name'], person['last_name'], person['_id']).__dict__)
     return { 'People': people }
@@ -40,10 +43,10 @@ def update_person(oid, updates: dict):
     if 'last_name' in updates:
         payload['last_name'] = updates['last_name']
 
-    response = requests.patch(f'http://data-access:5000/finman/person?oid={oid}', json=payload)
+    response = requests.patch(f'{config["connection_uri"]}/finman/person?oid={oid}', json=payload)
     return { 'Person': response.json() }
 
 def delete_person(oid):
     if oid is not None:
-        response = requests.delete(f'http://data-access:5000/finman/person?oid={oid}')
+        response = requests.delete(f'{config["connection_uri"]}/finman/person?oid={oid}')
         return response.json()
