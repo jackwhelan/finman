@@ -5,6 +5,9 @@ from classes.Account import Account
 from classes.Liability import Liability
 from classes.Person import Person
 from classes.Asset import Asset
+from etc.logger import initialize_logging
+
+initialize_logging()
 
 app = Flask(__name__)
 app.register_blueprint(api_version)
@@ -30,4 +33,4 @@ def seed_data():
     return Account(jack, "Worth", 20000, jacks_assets, jacks_liabilities, None, None)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=4000, debug=True)
+    app.run(host='0.0.0.0', port=4000, debug=False)

@@ -10,7 +10,7 @@ class ConfigHandler:
     Class to handle the reading in and parsing
     of configuration files.
     '''
-    def __init__(self, config_file_path='src/etc/application.ini'):
+    def __init__(self, config_file_path='etc/application.ini'):
         self.config = configparser.ConfigParser()
         self.config.read(config_file_path)
         self.__set_config_profile()

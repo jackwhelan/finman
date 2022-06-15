@@ -7,8 +7,6 @@ from classes.Asset import Asset
 import requests
 from bson.objectid import ObjectId
 
-from exceptions import AccountOperatorException
-
 def create_account(owner: Person, description: str, balance: float, assets: list[Asset], liabilities: list[Liability],
                  transaction_history: list[Transaction], scheduled_transactions: list[Transaction]):
     payload = {
