@@ -28,7 +28,7 @@ def get_liability(oid):
     liabilities = []
     response = requests.get(f'{config["connection_uri"]}/finman/liability')
     for liability in response.json()['response']:
-        liabilities.append(Liability(liability['name'], liability['description'], liability['value'], liability['_id']).__dict__)
+        liabilities.append(Liability(liability['name'], liability['description'], liability['value'], liability['last_updated'], liability['_id']).__dict__)
     return { 'Liabilities': liabilities }
 
 def update_liability(oid, updates: dict):
